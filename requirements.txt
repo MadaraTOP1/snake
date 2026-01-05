@@ -1,6 +1,3 @@
-# Core for the game
 pygame>=2.0
-
-# Optional: image processing and OCR (remove if not needed)
 pillow>=9.0
 pytesseract>=0.3.10
