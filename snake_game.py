@@ -1,10 +1,10 @@
-'''
+"""
 Изгиб Питона — реализация логики игры "Змейка".
 
 Файл: snake_game.py
 Требования: pygame
 Запуск: python snake_game.py
-'''
+"""
 
 import random
 import sys
@@ -35,32 +35,34 @@ RIGHT: Tuple[int, int] = (CELL_SIZE, 0)
 
 
 class GameObject:
-    'Базовый класс игрового объекта.'
+    "Базовый класс игрового объекта."
 
     def __init__(self, position: Tuple[int, int]):
-        'Инициализирует GameObject с заданной позицией.'
+        "Инициализирует GameObject с заданной позицией."
         self.position = position
 
     def draw(self, surface: pygame.Surface) -> None:
-        'Абстрактный метод отрисовки (переопределяется в наследниках).'
+        "Абстрактный метод отрисовки (переопределяется в наследниках)."
         pass
 
 
 class Apple(GameObject):
-    'Класс яблока, появляется в случайной свободной ячейке.'
+    "Класс яблока, появляется в случайной свободной ячейке."
 
     def __init__(
         self, forbidden_positions: Optional[List[Tuple[int, int]]] = None
     ) -> None:
-        'Инициализирует яблоко и задаёт начальную позицию.'
+        "Инициализирует яблоко и задаёт начальную позицию."
         center_x = (GRID_WIDTH // 2) * CELL_SIZE
         center_y = (GRID_HEIGHT // 2) * CELL_SIZE
         super().__init__((center_x, center_y))
         self.body_color = COLOR_APPLE
         self.randomize_position(forbidden_positions or [])
 
-    def randomize_position(self, forbidden_positions: List[Tuple[int, int]]) -> None:
-        'Устанавливает случайную позицию яблока, избегая forbidden_positions.'
+    def randomize_position(
+        self, forbidden_positions: List[Tuple[int, int]]
+    ) -> None:
+        "Устанавливает случайную позицию яблока, избегая forbidden_positions."
         attempts = 0
         while True:
             x = random.randrange(0, GRID_WIDTH) * CELL_SIZE
@@ -79,16 +81,18 @@ class Apple(GameObject):
                             return
 
     def draw(self, surface: pygame.Surface) -> None:
-        'Отрисовать яблоко на поверхности.'
-        rect = pygame.Rect(self.position[0], self.position[1], CELL_SIZE, CELL_SIZE)
+        "Отрисовать яблоко на поверхности."
+        rect = pygame.Rect(
+            self.position[0], self.position[1], CELL_SIZE, CELL_SIZE
+        )
         pygame.draw.rect(surface, self.body_color, rect)
 
 
 class Snake(GameObject):
-    'Класс змейки, хранит список сегментов и реализует движение.'
+    "Класс змейки, хранит список сегментов и реализует движение."
 
     def __init__(self) -> None:
-        'Инициализация змейки в центре, длина 1, движение вправо.'
+        "Инициализация змейки в центре, длина 1, движение вправо."
         center_x = (GRID_WIDTH // 2) * CELL_SIZE
         center_y = (GRID_HEIGHT // 2) * CELL_SIZE
         super().__init__((center_x, center_y))
@@ -99,16 +103,16 @@ class Snake(GameObject):
         self.next_direction: Optional[Tuple[int, int]] = None
 
     def get_head_position(self) -> Tuple[int, int]:
-        'Возвращает координаты головы змейки.'
+        "Возвращает координаты головы змейки."
         return self.positions[0]
 
     @staticmethod
     def _opposite(dir1: Tuple[int, int], dir2: Tuple[int, int]) -> bool:
-        'Проверяет, являются ли направления противоположными.'
+        "Проверяет, являются ли направления противоположными."
         return dir1[0] == -dir2[0] and dir1[1] == -dir2[1]
 
     def update_direction(self) -> None:
-        'Применяет next_direction, если оно задано и не противоположно.'
+        "Применяет next_direction, если оно задано и не противоположно."
         if self.next_direction is None:
             return
         if not self._opposite(self.next_direction, self.direction):
@@ -116,7 +120,7 @@ class Snake(GameObject):
         self.next_direction = None
 
     def move(self) -> Optional[Tuple[int, int]]:
-        'Сдвигает змейку на одну ячейку и возвращает удалённый хвост.'
+        "Сдвигает змейку на одну ячейку и возвращает удалённый хвост."
         current_head = self.get_head_position()
         new_head_x = current_head[0] + self.direction[0]
         new_head_y = current_head[1] + self.direction[1]
@@ -139,13 +143,13 @@ class Snake(GameObject):
         return removed_tail
 
     def draw(self, surface: pygame.Surface) -> None:
-        'Отрисовывает все сегменты змейки.'
+        "Отрисовывает все сегменты змейки."
         for pos in self.positions:
             rect = pygame.Rect(pos[0], pos[1], CELL_SIZE, CELL_SIZE)
             pygame.draw.rect(surface, self.body_color, rect)
 
     def reset(self) -> None:
-        'Сбрасывает змейку в начальное состояние.'
+        "Сбрасывает змейку в начальное состояние."
         center_x = (GRID_WIDTH // 2) * CELL_SIZE
         center_y = (GRID_HEIGHT // 2) * CELL_SIZE
         self.positions = [(center_x, center_y)]
@@ -155,7 +159,7 @@ class Snake(GameObject):
 
 
 def handle_key_event(event: pygame.event.Event, snake: Snake) -> None:
-    'Обработка нажатий клавиш: стрелки или WASD.'
+    "Обработка нажатий клавиш: стрелки или WASD."
     if event.type != pygame.KEYDOWN:
         return
     key = event.key
@@ -170,10 +174,10 @@ def handle_key_event(event: pygame.event.Event, snake: Snake) -> None:
 
 
 def main() -> None:
-    'Основная функция: инициализация и игровой цикл.'
+    "Основная функция: инициализация и игровой цикл."
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption('Изгиб Питона — Змейка')
+    pygame.display.set_caption("Изгиб Питона — Змейка")
     clock = pygame.time.Clock()
 
     snake = Snake()
@@ -218,5 +222,5 @@ def main() -> None:
     sys.exit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
