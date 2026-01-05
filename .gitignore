@@ -1,0 +1,68 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.cache
+.pytest_cache/
+
+# Editor and IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and local config
+*.log
+local_settings.py
+.env
+.env.*.local
+
+# Database files
+*.sqlite3
+*.db
+
+# Archives and large binaries (по умолчанию игнорируем)
+Telegram Desktop.zip
+unzipped_telegram/
+*.zip
+*.tar.gz
+*.7z
+
+# Windows executables
+*.exe
+*.msi
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Misc
+*.tmp
+*.bak
